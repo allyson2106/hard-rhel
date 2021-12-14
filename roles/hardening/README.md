@@ -56,15 +56,11 @@ tmpfs           900M  284K  900M   1% /tmp
 tmpfs           180M     0  180M   0% /run/user/1000
 ````
  
-Como base foi usada a seguinte imagem base AWS na conta *shared*.
-- RHEL7: `ami-06501af02091f3351`
-- RHEL8: `ami-0c2485d67d416fc4f`
+
 
 Foi necessário um segundo EBS para montagem do diretório `/home` e `/var/log`.
 
-AMIs usadas com EBS já adicionados e com mounts prontos para testes:
-- RHEL7: `ami-02fb1a8f636195344`
-- RHEL8: `ami-028dd15e8fac5bc7d`
+
 
 
 Role Variables
