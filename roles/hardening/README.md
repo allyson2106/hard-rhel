@@ -2,9 +2,7 @@ HARDENING
 =========
 
 ### Uma breve descrição sobre o uso dessa Role.
-As tasks dessa role foram feitas com base na documentação [Manual de Hardening para Linux Red Hat Enterprise] disponibilizada pelo time de Segurança.
-
-**ADD LINK DA DOC**
+As tasks dessa role foram feitas com base na documentação do `openscap`: https://static.open-scap.org/openscap-1.3/oscap_user_manual.html
 
 Requerimentos
 ------------
