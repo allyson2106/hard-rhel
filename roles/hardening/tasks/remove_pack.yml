@@ -1,0 +1,13 @@
+
+- name: Remove the telnet-server package
+  yum:
+    name: telnet-server
+    state: absent 
+- name: Remove the tftp-client package
+  yum:
+    name: tftp-client
+    state: absent 
+- name: Remove the tftp-server package
+  yum:
+    name: tftp-server
+    state: absent         

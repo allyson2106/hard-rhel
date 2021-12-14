@@ -1,0 +1,21 @@
+- name: "Disable the rhnsd Daemon"
+  service:
+      name: rhnsd
+      state: stopped
+      enabled: no
+  when:
+    - ansible_facts['distribution_major_version'] == "7"
+    - ansible_facts['os_family'] == "RedHat"
+  tags:
+    - CCE-81031-7
+    - DISA-STIG-RHEL-08-040025
+    - NIST-800-171-3.4.6
+    - NIST-800-53-CM-6(a)
+    - NIST-800-53-CM-7(a)
+    - NIST-800-53-CM-7(b)
+    - disable_strategy
+    - disable_rhnsd
+    - low_complexity
+    - low_severity
+    - medium_disruption
+    - reboot_required    

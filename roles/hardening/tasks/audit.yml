@@ -1,0 +1,183 @@
+
+
+- name: set RedHat audit grub cmdline
+  become: 'yes'
+  command: 'grubby --update-kernel=ALL --args="{{ grub_audit_cmdline }} {{ grub_audit_backlog_cmdline }}"'
+  register: grubby_update_kernel
+  when: ansible_os_family == "RedHat"
+  changed_when: grubby_update_kernel.rc != 0
+  failed_when: grubby_update_kernel.rc != 0
+  tags:
+    - auditd
+    - grub
+    - CCE-80825-3
+    - CCE-80943-4
+
+- name: set audit action_mail_acct
+  become: 'yes'
+  lineinfile:
+    regexp: "^action_mail_acct ="
+    line: "action_mail_acct = {{ auditd_action_mail_acct }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+    - CCE-80678-6
+
+- name: set audit admin_space_left_action
+  become: 'yes'
+  lineinfile:
+    regexp: "^admin_space_left_action = "
+    line: "admin_space_left_action = {{ auditd_admin_space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+
+- name: set audit disk_error_action
+  become: 'yes'
+  lineinfile:
+    regexp: "^disk_error_action ="
+    line: "disk_error_action = {{ auditd_disk_error_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+    - CCE-84046-2
+
+- name: set audit disk_full_action
+  become: 'yes'
+  lineinfile:
+    regexp: "^disk_full_action ="
+    line: "disk_full_action = {{ auditd_disk_full_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+    - CCE-84045-4
+
+- name: set audit max_log_file
+  become: 'yes'
+  lineinfile:
+    regexp: "^max_log_file ="
+    line: "max_log_file = {{ auditd_max_log_file }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+
+- name: set audit max_log_file_action
+  become: 'yes'
+  lineinfile:
+    regexp: "^max_log_file_action ="
+    line: "max_log_file_action = {{ auditd_max_log_file_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+    - CCE-80682-8
+
+- name: set audit num_logs
+  become: 'yes'
+  lineinfile:
+    regexp: "^num_logs ="
+    line: "num_logs = {{ auditd_num_logs }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+
+- name: set audit space_left
+  become: 'yes'
+  lineinfile:
+    regexp: "^space_left ="
+    line: "space_left = {{ auditd_space_left }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+
+- name: set audit space_left_action
+  become: 'yes'
+  lineinfile:
+    regexp: "^space_left_action ="
+    line: "space_left_action = {{ auditd_space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0664
+    state: present
+    create: 'no'
+  tags:
+    - auditd
+    - CCE-80684-4
+
+- name: audit.rules
+  become: 'yes'
+  template:
+    src: "audit.rules.j2"
+    dest: "{{ auditd_rules_config_path }}"
+    backup: 'yes'
+    mode: 0600
+    owner: root
+    group: root
+  when: auditd_apply_audit_rules|bool
+  notify:
+    - generate auditd
+    - restart auditd
+  
+  tags:
+    - auditd
+    - CCE-80708-1
+- name: Enable service auditd
+  block:
+
+    - name: Gather the package facts
+      package_facts:
+        manager: auto
+
+    - name: Enable service auditd
+      service:
+        name: auditd
+        enabled: 'yes'
+        state: started
+        masked: 'no'
+      when:
+        - '"audit" in ansible_facts.packages'
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - CCE-80872-5
+    - CJIS-5.4.1.1
+    - DISA-STIG-RHEL-08-030381
+    - NIST-800-171-3.3.1
+    - NIST-800-171-3.3.2
+    - NIST-800-171-3.3.6
+    - NIST-800-53-AC-2(g)
+    - NIST-800-53-AC-6(9)
+    - NIST-800-53-AU-10
+    - NIST-800-53-AU-12(c)
+    - NIST-800-53-AU-14(1)
+    - NIST-800-53-AU-2(d)
+    - NIST-800-53-AU-3
+    - NIST-800-53-CM-6(a)
+    - PCI-DSS-Req-10.1
+    - enable_strategy
+    - low_complexity
+    - low_disruption
+    - medium_severity
+    - no_reboot_needed
+    - service_auditd_enabled

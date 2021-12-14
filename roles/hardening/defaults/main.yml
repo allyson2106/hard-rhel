@@ -1,0 +1,33 @@
+---
+# defaults file for hardening AUDIT
+auditd_config_path: "/etc/audit/auditd.conf"
+
+
+auditd_rules_config_path: "/etc/audit/rules.d/audit.rules"
+
+
+auditd_apply_audit_rules: 'yes'
+auditd_action_mail_acct: root
+auditd_admin_space_left_action: suspend
+auditd_disk_error_action: suspend
+auditd_disk_full_action: suspend
+auditd_max_log_file: 32
+auditd_max_log_file_action: keep_logs
+auditd_mode: 1
+auditd_num_logs: 5
+auditd_space_left: 75
+auditd_space_left_action: email
+grub_audit_backlog_cmdline: audit_backlog_limit=8192
+grub_audit_cmdline: audit=1
+
+# /tmp Mount dir
+systemd_tmp_mount_path: /etc/systemd/system/tmp.mount
+
+
+# Disable modprobes FS
+fs_modules_blocklist:
+  - cramfs
+  - freevxfs
+  - hfs
+  - hfsplus
+  - udf

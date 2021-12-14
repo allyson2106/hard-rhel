@@ -1,0 +1,41 @@
+---
+# handlers file for hardening
+- name: Reload aide
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    enabled: yes
+    name: aide
+
+- name: Enable rsyslog
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    enabled: yes
+    name: rsyslog    
+
+- name: restart auditd
+  become: 'yes'
+  command: service auditd restart
+  args:
+    warn: false
+  tags:
+    - CCE-80872-5
+
+
+- name: generate auditd
+  become: 'yes'
+  command: augenrules
+
+
+- name: restart sysctl
+  become: 'yes'
+  service:
+    name: systemd-sysctl
+    state: restarted
+
+- name: reload systemd
+  become: 'yes'
+  systemd:
+    daemon_reload: 'yes'
+

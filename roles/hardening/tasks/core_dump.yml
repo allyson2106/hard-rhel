@@ -1,0 +1,27 @@
+- name: 2.6.1 | Core Dump
+  lineinfile:
+    create: true
+    dest: /etc/security/limits.conf
+    line: "* hard core 0" 
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+
+- name: 2.6.2 | Core Dump
+  lineinfile:
+    create: true
+    dest: /etc/sysctl.conf
+    line: fs.suid_dumpable=0
+
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+
+- name: 2.6.2 | Core Dump - Shield
+  lineinfile:
+    create: true
+    dest: /etc/sysctl.conf
+    line: kernel.sec-shield = 1
+
+  when: 
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+    - ansible_facts['distribution_major_version'] == "6"
+    - ansible_facts['os_family'] == "RedHat"
+
+

@@ -1,0 +1,11 @@
+- name: 4.1 | Firewall  and Network config
+  blockinfile:
+    path: /etc/sysctl.conf
+    block: |
+      net.ipv4.ip_forward=0
+      net.ipv4.conf.all.accept_redirects=0
+      net.ipv4.conf.default.accept_redirects=0
+      net.ipv4.conf.all.secure_redirects=0
+      net.ipv4.conf.default.secure_redirects=0
+
+

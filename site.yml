@@ -1,0 +1,7 @@
+---
+- hosts: [ teste ]
+  vars:
+  become: yes
+  gather_facts: yes
+  roles:
+    - { role: hardening }

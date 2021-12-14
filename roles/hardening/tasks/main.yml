@@ -1,0 +1,12 @@
+---
+  - include: tmp_mount.yml
+  - include: restrict_partition_mount.yml
+  - include: disable_mount_fs.yml
+  - include: disable_rhnsd.yml
+  - include: aide_install.yml
+  - include: core_dump.yml
+  - include: net_ipv4.yml
+  - include: service_mgmt.yml
+  - include: remove_pack.yml
+  - include: audit.yml
+  - include: reboot.yml

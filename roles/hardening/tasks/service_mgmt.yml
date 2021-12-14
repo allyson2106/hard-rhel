@@ -1,0 +1,36 @@
+
+- name: 3.1 | Install a package rsyslog
+  yum:
+    name: rsyslog
+    state: latest 
+  notify: "Enable rsyslog"  
+
+- name: Ensure rsyslog-gnutls is installed
+  package:
+    name: rsyslog-gnutls
+    state: present  
+  when: ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - CCE-82859-0
+    - DISA-STIG-RHEL-08-030680
+    - enable_strategy
+    - low_complexity
+    - low_disruption
+    - medium_severity
+    - no_reboot_needed
+    - package_rsyslog-gnutls_installed
+
+- name: 5.1.1 | role config rsyslog
+  blockinfile:
+    path: /etc/rsyslog.conf
+    block: |
+      auth,user.* /var/log/messages
+      kern.* /var/log/kern.log
+      daemon.* /var/log/daemon.log
+      syslog.* /var/log/syslog
+      lpr,news,uucp,local10,local11,local12,local13,local14,local15,local16.* /var/log/unused.log
+  notify: 
+    - "restart sysctl"
+    - "reload systemd"    
+
+    
