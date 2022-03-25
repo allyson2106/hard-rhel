@@ -88,7 +88,7 @@ Exemplo de playbook chamando a role:
 ````        
 Exemplo de AD HOC command para execução:
 ````
-ansible-playbook --private-key ~/.ssh/key-hardening-sa-east-1-prd.pem --user ec2-user site.yml
+ansible-playbook --private-key ~/.ssh/key-hardening.pem --user ec2-user site.yml
 ````
 License
 -------
